@@ -3,7 +3,7 @@ use zettelmaschine::Zettelmaschine;
 
 const NUMBER_OF_ARGUMENTS: i32 = 1;
 
-fn get_path() -> String {
+fn get_base_dir() -> String {
     let args: Vec<String> = env::args().collect();
     let args_count = (args.len() as i32) - 1;
 
@@ -12,15 +12,17 @@ fn get_path() -> String {
         process::exit(1);
     }
 
-    let path = args.get(1).unwrap_or_else(|| {
-        println!("Could not parse filepath.");
+    let base_dir = args.get(1).unwrap_or_else(|| {
+        println!("Could not parse base directory.");
         process::exit(1);
     });
 
-    return path.clone();
+    return base_dir.clone();
 }
 
 fn main() {
-    let path = get_path();
-    Zettelmaschine::new(path);
+    let base_dir = get_base_dir();
+    let mut maschine = Zettelmaschine::new(base_dir);
+
+    maschine.run();
 }
