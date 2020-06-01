@@ -7,7 +7,7 @@ use std::path::PathBuf;
 pub struct Zettel {
     content: String,
     path: PathBuf,
-    tags: HashSet<String>
+    pub(crate) tags: HashSet<String>
 }
 
 impl Zettel {
@@ -21,11 +21,16 @@ impl Zettel {
 
     fn find_tags(content: &String) -> HashSet<String> {
         let re = Regex::new(r"#(\w+)").unwrap();
-        let iter = re.find_iter(&content);
+        let iter = re.captures_iter(&content);
         let mut tags: HashSet<String> = HashSet::new();
 
-        for s in iter {
-            tags.insert(s.as_str().parse().unwrap());
+        for captures in iter {
+            match captures.get(1) {
+                Some(m) => {
+                    tags.insert(m.as_str().to_string());
+                },
+                _ => {}
+            }
         }
 
         return tags;
