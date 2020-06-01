@@ -1,7 +1,6 @@
 use std::collections::HashSet;
 use std::fs::{read_dir, ReadDir, read_to_string};
 use std::process;
-use std::path::PathBuf;
 use crate::zettel::Zettel;
 
 pub struct ZettelReader;
@@ -28,7 +27,7 @@ impl ZettelReader {
 
     fn get_dir_iter(base_dir: String) -> ReadDir {
         let dir_iter = read_dir(base_dir).unwrap_or_else(|err| {
-            println!("Could not list files in base directory: {}", err);
+            eprintln!("Could not list files in base directory: {}", err);
             process::exit(1);
         });
 

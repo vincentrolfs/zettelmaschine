@@ -22,7 +22,7 @@ fn get_base_dir() -> String {
 
 fn main() {
     let base_dir = get_base_dir();
-    let mut maschine = Zettelmaschine::new(base_dir);
+    let maschine = Zettelmaschine::new(base_dir);
 
     maschine.run();
 }
