@@ -1,32 +1,37 @@
 use std::collections::HashSet;
-use std::fs::{read_dir, ReadDir};
+use std::fs::{read_dir, ReadDir, read_to_string};
 use std::process;
 use std::path::PathBuf;
+use crate::zettel::Zettel;
 
 pub struct ZettelReader;
 
 impl ZettelReader {
-    pub fn get_paths(base_dir: String) -> HashSet<PathBuf> {
-        let read_dir_iter = read_dir(base_dir).unwrap_or_else(|err| {
-            println!("Could not list files in base directory: {}", err);
-            process::exit(1);
-        });
+    pub fn get_zettel(base_dir: String) -> HashSet<Zettel> {
+        let dir_entries = Self::get_dir_iter(base_dir);
+        let mut zettel = HashSet::new();
 
-        return Self::get_paths_from_iter(read_dir_iter);
-    }
-
-    fn get_paths_from_iter(read_dir_iter: ReadDir) -> HashSet<PathBuf> {
-        let mut paths = HashSet::new();
-
-        for dir_entry_result in read_dir_iter {
+        for dir_entry_result in dir_entries {
             match dir_entry_result {
-                Ok(dir_entry) => {
-                    paths.insert(dir_entry.path());
-                }
+                Ok(dir_entry) => match read_to_string(dir_entry.path()) {
+                    Ok(content) => {
+                        zettel.insert(Zettel::new(content, dir_entry.path()));
+                    },
+                    _ => {}
+                },
                 _ => {}
             }
         }
 
-        paths
+        return zettel;
+    }
+
+    fn get_dir_iter(base_dir: String) -> ReadDir {
+        let dir_iter = read_dir(base_dir).unwrap_or_else(|err| {
+            println!("Could not list files in base directory: {}", err);
+            process::exit(1);
+        });
+
+        return dir_iter;
     }
 }

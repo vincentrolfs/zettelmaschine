@@ -1,18 +1,21 @@
 use std::collections::HashSet;
 use regex::Regex;
 use std::hash::{Hash, Hasher};
+use std::path::PathBuf;
 
 #[derive(Eq, PartialEq)]
 pub struct Zettel {
     content: String,
+    path: PathBuf,
     tags: HashSet<String>
 }
 
 impl Zettel {
-    pub fn new(content: String) -> Zettel {
+    pub fn new(content: String, path: PathBuf) -> Zettel {
         return Zettel {
-            content: content.clone(),
-            tags: Self::find_tags(&content)
+            tags: Self::find_tags(&content),
+            content,
+            path,
         }
     }
 
