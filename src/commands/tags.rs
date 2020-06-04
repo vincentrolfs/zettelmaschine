@@ -2,7 +2,7 @@ use std::collections::HashSet;
 use crate::zettel::Zettel;
 use std::iter::FromIterator;
 
-pub fn tags(zettel: &HashSet<Zettel>) {
+pub fn run(zettel: &HashSet<Zettel>) {
     let mut all_tags = HashSet::new();
 
     for one_zettel in zettel.iter() {
