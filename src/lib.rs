@@ -3,8 +3,10 @@ use std::io::{stdin, stdout, Write};
 use std::iter::FromIterator;
 use zettel::Zettel;
 use zettel_reader::ZettelReader;
+
 mod zettel_reader;
 mod zettel;
+mod commands;
 
 pub struct Zettelmaschine {
     zettel: HashSet<Zettel>
@@ -31,11 +33,14 @@ impl Zettelmaschine {
     fn match_input(&self, input: Option<String>) {
         match input {
             Some(input) => {
-                let input = input.as_str().trim();
-                match input {
-                    "tags" => self.print_all_tags(),
+                let mut input_iter = input.as_str().trim().split_ascii_whitespace();
+                let command = input_iter.next().unwrap_or("");
+                let arguments: Vec<&str> = input_iter.collect();
+
+                match command {
+                    "tags" => commands::tags(&self.zettel),
                     "" => {}
-                    _ => println!("Unknown command: {}", input)
+                    _ => println!("Unknown command: {}", command)
                 }
             }
             _ => {
@@ -51,20 +56,5 @@ impl Zettelmaschine {
             Ok(_) => Some(input),
             _ => None
         };
-    }
-
-    fn print_all_tags(&self) {
-        let mut all_tags = HashSet::new();
-
-        for zettel in self.zettel.iter() {
-            all_tags.extend(&zettel.tags);
-        }
-
-        let mut all_tags_sorted = Vec::from_iter(all_tags);
-        all_tags_sorted.sort();
-
-        for tag in all_tags_sorted.iter() {
-            println!("{}", tag);
-        }
     }
 }
