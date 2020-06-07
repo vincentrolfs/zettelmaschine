@@ -20,7 +20,7 @@ impl Zettel {
     }
 
     fn find_tags(content: &String) -> HashSet<String> {
-        let re = Regex::new(r"#(\w+)").unwrap();
+        let re = Regex::new(r"#([\w\-]+)").unwrap();
         let iter = re.captures_iter(&content);
         let mut tags: HashSet<String> = HashSet::new();
 
