@@ -7,7 +7,7 @@ use std::path::PathBuf;
 pub struct Zettel {
     content: String,
     path: PathBuf,
-    pub(crate) tags: HashSet<String>
+    pub tags: HashSet<String>
 }
 
 impl Zettel {
