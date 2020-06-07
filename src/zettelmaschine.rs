@@ -1,12 +1,10 @@
 use std::collections::HashSet;
 use std::io::{stdin, stdout, Write};
 use std::iter::FromIterator;
-use zettel::Zettel;
-use zettel_reader::ZettelReader;
 
-mod zettel_reader;
-mod zettel;
-mod commands;
+use crate::zettel::Zettel;
+use crate::zettel_reader::ZettelReader;
+use crate::commands;
 
 pub struct Zettelmaschine {
     zettel: HashSet<Zettel>
@@ -39,7 +37,7 @@ impl Zettelmaschine {
 
                 match command {
                     "tags" => commands::tags(&self.zettel),
-                    "zettel" => commands::zettel(&self.zettel, arguments),
+                    "zettel" => commands::zettel(&self.zettel),
                     "" => {}
                     _ => println!("Unknown command: {}", command)
                 }

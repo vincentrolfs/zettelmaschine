@@ -5,8 +5,8 @@ use std::path::PathBuf;
 
 #[derive(Eq, PartialEq)]
 pub struct Zettel {
-    content: String,
-    path: PathBuf,
+    pub content: String,
+    pub path: PathBuf,
     pub tags: HashSet<String>
 }
 

@@ -1,3 +1,8 @@
+mod zettelmaschine;
+mod zettel_reader;
+mod zettel;
+mod commands;
+
 use std::{env, process};
 use zettelmaschine::Zettelmaschine;
 
